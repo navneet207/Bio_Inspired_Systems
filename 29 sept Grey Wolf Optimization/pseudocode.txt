@@ -1,0 +1,61 @@
+Function fitness_function(params, stock_data):
+    short_window = params[0]
+    long_window = params[1]
+    
+    # Calculate moving averages
+    short_ma = CalculateMovingAverage(stock_data, short_window)
+    long_ma = CalculateMovingAverage(stock_data, long_window)
+    
+    # Generate Buy/Sell signals
+    signal = GenerateSignals(short_ma, long_ma)
+    
+    # Calculate daily returns
+    daily_returns = CalculateDailyReturns(stock_data)
+    
+    # Calculate strategy returns
+    strategy_returns = CalculateStrategyReturns(daily_returns, signal)
+    
+    # Calculate total profit
+    total_profit = Sum(strategy_returns)
+    
+    # Return negative profit for minimization
+    return -total_profit
+
+Class GreyWolfOptimizer:
+    Initialize:
+        Set num_wolves, max_iter, fitness_function, stock_data
+        Initialize wolves' positions randomly in range [5, 50]
+        Evaluate fitness of each wolf
+
+    Function update_position(alpha_pos, wolf_pos, A, C):
+        Calculate distance (D) between alpha_pos and wolf_pos
+        Update wolf's position based on A and C coefficients
+
+    Function optimize:
+        For each iteration (t in max_iter):
+            Sort wolves based on fitness
+            Set alpha, beta, delta wolves based on sorted fitness
+            
+            Generate random A and C for each wolf
+            For each wolf:
+                If random() < 0.5:
+                    Update position using alpha position
+                Else:
+                    Update position using beta position
+                Clamp position to valid range [5, 50]
+            
+            Recalculate fitness for all wolves
+            
+            Print best fitness in current iteration
+            
+        Return best wolf's position (alpha) and best profit
+
+Main:
+    Fetch stock_data for a specific symbol (e.g., 'AAPL')
+    
+    Create GWO instance and pass the fitness_function and stock_data
+    Run the optimization to get the best parameters and profit
+    
+    Print the best moving average windows and profit
+    
+    Plot stock price and optimized moving averages on a graph
