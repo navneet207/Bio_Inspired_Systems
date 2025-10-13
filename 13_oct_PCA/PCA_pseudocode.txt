@@ -1,0 +1,40 @@
+Define objective function f(x)  // e.g., Rastrigin function
+
+Initialize:
+    grid_rows, grid_cols, dimensions
+    lower_bound, upper_bound
+    iterations
+
+Create population grid:
+    For each cell (i, j) in grid:
+        Initialize cell solution randomly within bounds
+
+best_solution = None
+best_fitness = +∞
+
+For iteration = 1 to iterations:
+    Evaluate fitness of all cells:
+        For each cell (i, j):
+            fitness[i, j] = f(population[i, j])
+
+    Update global best:
+        Find cell with minimum fitness in the grid
+        If minimum fitness < best_fitness:
+            best_fitness = minimum fitness
+            best_solution = corresponding cell solution
+
+    Update population:
+        For each cell (i, j):
+            neighbors = get all neighbors of cell (i, j)  // Moore neighborhood with wrap-around
+            best_neighbor_solution = population[i, j]
+            best_neighbor_fitness = fitness[i, j]
+
+            For each neighbor (ni, nj) in neighbors:
+                If fitness[ni, nj] < best_neighbor_fitness:
+                    best_neighbor_fitness = fitness[ni, nj]
+                    best_neighbor_solution = population[ni, nj]
+
+            If best_neighbor_fitness < fitness[i, j]:
+                population[i, j] = best_neighbor_solution
+
+Output best_solution and best_fitness
